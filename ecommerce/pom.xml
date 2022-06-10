@@ -187,7 +187,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.javatpoint.AppMain</mainClass>
+                            <mainClass>com.nocountry.ecommerce.EcommerceApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
