@@ -11,8 +11,6 @@ public interface ProductService extends ActiveAvailable {
 
     List<Product> findBySpecification(ProductFilterRequest request);
 
-    List<Product> findAll();
-
     Long create(Product product);
 
     void save(Product product);
@@ -20,4 +18,5 @@ public interface ProductService extends ActiveAvailable {
     void update(Long id, Product product);
 
     void delete(Long id);
+
 }

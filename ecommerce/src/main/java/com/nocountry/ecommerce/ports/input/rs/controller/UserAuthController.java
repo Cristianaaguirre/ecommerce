@@ -1,7 +1,6 @@
 package com.nocountry.ecommerce.ports.input.rs.controller;
 
 import com.nocountry.ecommerce.common.security.services.AuthenticationService;
-import com.nocountry.ecommerce.common.security.utils.JwtUtils;
 import com.nocountry.ecommerce.domain.model.User;
 import com.nocountry.ecommerce.domain.usecase.UserService;
 import com.nocountry.ecommerce.ports.input.rs.mapper.AuthenticationMapper;
@@ -16,8 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -26,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.AUTHENTICATION_URI;
+import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.BOTH;
 
 @RequestMapping(AUTHENTICATION_URI)
 @RequiredArgsConstructor
@@ -40,13 +40,11 @@ public class UserAuthController {
 
     private final AuthenticationService authenticationService;
 
-    private final JwtUtils jwtUtils;
 
-    private final UserDetailsService userDetailsService;
+    //=========================Register=========================//
 
-
-    @PostMapping("/register")
     @ApiOperation("register a new user")
+    @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
 
         User createdUser = userService.createUser(userMapper.registerRequestToUser(registerRequest));
@@ -58,8 +56,11 @@ public class UserAuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponse(userDetailResponse, authResponse));
     }
 
-    @PostMapping("/login")
+    //=========================Login=========================//
+
+
     @ApiOperation("log into the ecommerce")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest authRequest) {
         AuthResponse authResponse = authMapper
                 .jwtToAuthResponse(authenticationService
@@ -67,9 +68,11 @@ public class UserAuthController {
         return ResponseEntity.status(HttpStatus.OK).body(authResponse);
     }
 
+    //=========================Refresh token=========================//
 
-    @GetMapping("/token-refresh")
     @ApiOperation("get the refresh token")
+    @PreAuthorize(BOTH)
+    @GetMapping("/token-refresh")
     public ResponseEntity<TokenRefreshResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         TokenRefreshResponse tokenRefreshResponse = new TokenRefreshResponse();
         tokenRefreshResponse.setJwtRefresh(authenticationService.refresh(request, response));
@@ -77,8 +80,9 @@ public class UserAuthController {
     }
 
 
-    @GetMapping("/me")
     @ApiIgnore
+    @PreAuthorize(BOTH)
+    @GetMapping("/me")
     public ResponseEntity<UserDetailResponse> getUserDetail(@AuthenticationPrincipal User user) {
         UserDetailResponse userDetailResponse = userMapper.userToUserDetailResponse(user);
         return ResponseEntity.status(HttpStatus.OK).body(userDetailResponse);

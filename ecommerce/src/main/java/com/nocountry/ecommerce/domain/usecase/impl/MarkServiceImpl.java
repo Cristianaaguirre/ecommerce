@@ -29,8 +29,8 @@ public class MarkServiceImpl implements MarkService {
 
 
     @Transactional(readOnly = true)
-    public List<Mark> findAll() {
-        return markRepository.findAll();
+    public List<Mark> findAllActive() {
+        return markRepository.findAllByIsAvailable();
     }
 
 

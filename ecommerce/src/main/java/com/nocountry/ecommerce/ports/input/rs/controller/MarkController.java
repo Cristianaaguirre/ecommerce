@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 
-import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.MARK_URI;
+import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,16 +28,18 @@ public class MarkController {
     private final MarkService markService;
     private final MarkMapper mapper;
 
-    //====================Gets====================//
+    //====================Display all====================//
 
+    @PreAuthorize(BOTH)
     @GetMapping
     @ApiOperation("display a list of marks")
     public ResponseEntity<List<MarkDetails>> getAllProducts() {
-        return ResponseEntity.ok(mapper.MarkListToMarkDetailList(markService.findAll()));
+        return ResponseEntity.ok(mapper.MarkListToMarkDetailList(markService.findAllActive()));
     }
 
-    //====================Get by id====================//
+    //====================Get one by id====================//
 
+    @PreAuthorize(BOTH)
     @ApiOperation("get a mark by id")
     @GetMapping(path = "/{id}")
     public ResponseEntity<MarkDetails> getById(@Valid @NotNull @PathVariable("id") Long id) {
@@ -44,8 +47,9 @@ public class MarkController {
     }
 
 
-    //====================Posts====================//
+    //====================Create====================//
 
+    @PreAuthorize(ADMIN)
     @ApiOperation("create a mark")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createMark(@RequestBody MarkRequest markCreateRequest) {
@@ -56,9 +60,10 @@ public class MarkController {
         return ResponseEntity.created(location).build();
     }
 
-    //====================Patchs====================//
+    //====================Update====================//
 
     @ApiOperation("update data mark")
+    @PreAuthorize(ADMIN)
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateMark(@Valid @NotNull @PathVariable("id") Long id,
@@ -67,6 +72,7 @@ public class MarkController {
     }
 
     @ApiOperation("update is available")
+    @PreAuthorize(ADMIN)
     @PatchMapping(path = "/available/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAvailable(@Valid @NotNull @PathVariable("id") Long id) {
@@ -77,6 +83,7 @@ public class MarkController {
     //====================Deletes====================//
 
     @ApiOperation("delete a mark")
+    @PreAuthorize(ADMIN)
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMark(@Valid @NotNull @PathVariable Long id) {

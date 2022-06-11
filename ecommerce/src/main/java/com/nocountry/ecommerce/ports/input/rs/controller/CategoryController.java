@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +25,10 @@ import com.nocountry.ecommerce.domain.usecase.CategoryService;
 import com.nocountry.ecommerce.ports.input.rs.mapper.CategoryMapper;
 import com.nocountry.ecommerce.ports.input.rs.request.CategoryRequest;
 import com.nocountry.ecommerce.ports.input.rs.response.CategoryDetails;
-import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.CATEGORY_URI;
 
 import lombok.RequiredArgsConstructor;
+
+import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,8 +40,9 @@ public class CategoryController {
     private final CategoryMapper mapper;
 
 
-    //====================Gets====================//
-
+    //====================Display all====================//
+    
+    @PreAuthorize(BOTH)
     @GetMapping
     public ResponseEntity<List<CategoryDetails>> getAllCategories() {
         return ResponseEntity.ok(mapper.CategoryListToCategoryDetailList(categoryService.findAll()));
@@ -47,26 +50,28 @@ public class CategoryController {
 
     //====================Get by id====================//
 
+    @PreAuthorize(BOTH)
     @GetMapping(path = "/{id}")
     public ResponseEntity<CategoryDetails> getById(@Valid @NotNull @PathVariable("id") Long id) {
         return ResponseEntity.ok(mapper.CategoryToCategoryDetails(categoryService.getByIdIfExists(id)));
     }
 
 
-    //====================Posts====================//
+    //====================Create====================//
 
+    @PreAuthorize(ADMIN)
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createCategory(@RequestBody CategoryRequest categoryCreateRequest) {
         long id = categoryService.save(mapper.CategoryRequestToCategory(categoryCreateRequest));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(id)
-                .toUri();
+                .path("/{id}").buildAndExpand(id).toUri();
         return ResponseEntity.created(location).build();
     }
 
-    //====================Patchs====================//
+    //====================Update====================//
 
+    @PreAuthorize(ADMIN)
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCategory(@Valid @NotNull @PathVariable("id") Long id,
@@ -78,6 +83,7 @@ public class CategoryController {
 
     //====================Deletes====================//
 
+    @PreAuthorize(ADMIN)
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@Valid @NotNull @PathVariable Long id) {
