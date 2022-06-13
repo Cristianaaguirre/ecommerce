@@ -28,6 +28,7 @@ import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.AUTHENTICA
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.BOTH;
 
 @RequestMapping(AUTHENTICATION_URI)
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
 public class UserAuthController {
