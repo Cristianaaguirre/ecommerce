@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.AUTHENTICATION_URI;
 
@@ -44,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        http.csrf().disable().authorizeRequests()
                 .antMatchers(AUTHENTICATION_URI + "*").permitAll()
                 .and().exceptionHandling()
                 .and().sessionManagement()
