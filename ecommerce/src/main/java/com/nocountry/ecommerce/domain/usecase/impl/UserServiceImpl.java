@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final RoleRepository roleRepository;
 
-    private final static String ROLE_USER = "ROLE_ADMIN";
+    private final static String ROLE_USER = "ROLE_USER";
 
     //=========================Create User=========================//
 
