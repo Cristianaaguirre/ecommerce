@@ -41,8 +41,7 @@ public class CategoryController {
 
 
     //====================Display all====================//
-    
-    @PreAuthorize(BOTH)
+
     @GetMapping
     public ResponseEntity<List<CategoryDetails>> getAllCategories() {
         return ResponseEntity.ok(mapper.CategoryListToCategoryDetailList(categoryService.findAll()));
@@ -50,7 +49,6 @@ public class CategoryController {
 
     //====================Get by id====================//
 
-    @PreAuthorize(BOTH)
     @GetMapping(path = "/{id}")
     public ResponseEntity<CategoryDetails> getById(@Valid @NotNull @PathVariable("id") Long id) {
         return ResponseEntity.ok(mapper.CategoryToCategoryDetails(categoryService.getByIdIfExists(id)));
@@ -59,7 +57,6 @@ public class CategoryController {
 
     //====================Create====================//
 
-    @PreAuthorize(ADMIN)
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createCategory(@RequestBody CategoryRequest categoryCreateRequest) {
         long id = categoryService.save(mapper.CategoryRequestToCategory(categoryCreateRequest));
@@ -71,7 +68,6 @@ public class CategoryController {
 
     //====================Update====================//
 
-    @PreAuthorize(ADMIN)
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCategory(@Valid @NotNull @PathVariable("id") Long id,
@@ -80,10 +76,8 @@ public class CategoryController {
     }
 
 
-
     //====================Deletes====================//
 
-    @PreAuthorize(ADMIN)
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@Valid @NotNull @PathVariable Long id) {

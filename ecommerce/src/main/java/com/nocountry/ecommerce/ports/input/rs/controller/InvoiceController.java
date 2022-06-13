@@ -31,7 +31,6 @@ public class InvoiceController {
     //=========================Get invoice=========================//
 
     @GetMapping(path = "/{id}")
-    @PreAuthorize(BOTH)
     public ResponseEntity<List<InvoiceResponse>> getInvoices(@PathVariable("id") Long id) {
         List<InvoiceResponse> responses = invoiceMapper.ListInvoiceToInvoiceResponse(invoiceService.getInvoices(id));
         return ResponseEntity.ok(responses);
@@ -39,7 +38,6 @@ public class InvoiceController {
 
     //=========================Buy products=========================//
 
-    @PreAuthorize(BOTH)
     @PostMapping
     public void processPurchase(@RequestBody PurchaseRequest request) {
         invoiceService.processPurchaseRequest(request);

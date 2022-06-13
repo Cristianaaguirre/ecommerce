@@ -34,7 +34,6 @@ public class ProductController {
    //====================Display product page====================//
 
    @ApiOperation("display a product page")
-   @PreAuthorize(BOTH)
    @GetMapping(path = "/products")
    public ResponseEntity<List<ProductDetails>> getPage(
       @RequestParam(required = false, defaultValue = "") String name,
@@ -51,7 +50,6 @@ public class ProductController {
    //====================Create====================//
 
    @ApiOperation("create a product")
-   @PreAuthorize(ADMIN)
    @PostMapping(path = "/create")
    public ResponseEntity<Void> createProduct(@RequestBody @Valid ProductCreateRequest request) {
       long id = service.create(mapper.CreateProductToProduct(request));
@@ -63,7 +61,6 @@ public class ProductController {
    //====================Update====================//
 
    @ApiOperation("update product data")
-   @PreAuthorize(ADMIN)
    @PatchMapping(path = "/{id}")
    @ResponseStatus(HttpStatus.NO_CONTENT)
    public void updateProduct(@PathVariable("id") @NotNull Long id,
@@ -72,7 +69,6 @@ public class ProductController {
    }
 
    @ApiOperation("update is available product")
-   @PreAuthorize(ADMIN)
    @PatchMapping(path = "/available/{id}")
    @ResponseStatus(HttpStatus.NO_CONTENT)
    public void updateAvailable(@PathVariable("id") @NotNull Long id) {
@@ -82,7 +78,6 @@ public class ProductController {
    //====================Deletes====================//
 
    @ApiOperation("delete a product")
-   @PreAuthorize(ADMIN)
    @DeleteMapping(path = "/{id}")
    @ResponseStatus(HttpStatus.NO_CONTENT)
    public void deleteProduct(@PathVariable @NotBlank @Valid Long id) {
