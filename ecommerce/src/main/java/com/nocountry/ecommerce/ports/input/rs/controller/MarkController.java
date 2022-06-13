@@ -21,7 +21,7 @@ import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://ecommerce-no-country.herokuapp.com/")
 @RequestMapping(MARK_URI)
 public class MarkController {
 
