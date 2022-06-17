@@ -70,6 +70,7 @@ public class InvoiceMapperImpl implements InvoiceMapper {
 
         productDetails.setName( product.getName() );
         productDetails.setPrice( product.getPrice() );
+        productDetails.setStock( product.getStock() );
 
         return productDetails;
     }

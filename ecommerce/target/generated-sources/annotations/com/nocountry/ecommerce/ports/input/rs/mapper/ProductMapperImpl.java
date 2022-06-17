@@ -63,6 +63,7 @@ public class ProductMapperImpl implements ProductMapper {
 
         productDetails.setName( product.getName() );
         productDetails.setPrice( product.getPrice() );
+        productDetails.setStock( product.getStock() );
 
         return productDetails;
     }
