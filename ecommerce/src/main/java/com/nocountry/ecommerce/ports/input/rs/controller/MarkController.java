@@ -47,6 +47,7 @@ public class MarkController {
 
     //====================Create====================//
 
+    @PreAuthorize(ADMIN)
     @ApiOperation("create a mark")
     @PostMapping(path = "/create")
     public ResponseEntity<Void> createMark(@RequestBody MarkRequest markCreateRequest) {
@@ -60,6 +61,7 @@ public class MarkController {
     //====================Update====================//
 
     @ApiOperation("update data mark")
+    @PreAuthorize(ADMIN)
     @PatchMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateMark(@Valid @NotNull @PathVariable("id") Long id,
@@ -68,6 +70,7 @@ public class MarkController {
     }
 
     @ApiOperation("update is available")
+    @PreAuthorize(ADMIN)
     @PatchMapping(path = "/available/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAvailable(@Valid @NotNull @PathVariable("id") Long id) {
@@ -78,6 +81,7 @@ public class MarkController {
     //====================Deletes====================//
 
     @ApiOperation("delete a mark")
+    @PreAuthorize(ADMIN)
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMark(@Valid @NotNull @PathVariable Long id) {

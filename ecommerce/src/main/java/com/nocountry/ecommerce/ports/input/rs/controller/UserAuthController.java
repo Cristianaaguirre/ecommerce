@@ -22,13 +22,13 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.AUTHENTICATION_URI;
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.BOTH;
 
 @RequestMapping(AUTHENTICATION_URI)
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
 public class UserAuthController {
@@ -72,6 +72,7 @@ public class UserAuthController {
     //=========================Refresh token=========================//
 
     @ApiOperation("get the refresh token")
+    @PreAuthorize(BOTH)
     @GetMapping("/token-refresh")
     public ResponseEntity<TokenRefreshResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         TokenRefreshResponse tokenRefreshResponse = new TokenRefreshResponse();
@@ -81,6 +82,7 @@ public class UserAuthController {
 
 
     @ApiIgnore
+    @PreAuthorize(BOTH)
     @GetMapping("/me")
     public ResponseEntity<UserDetailResponse> getUserDetail(@AuthenticationPrincipal User user) {
         UserDetailResponse userDetailResponse = userMapper.userToUserDetailResponse(user);

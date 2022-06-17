@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.*;
 
 @RequestMapping(USER_URI)
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
 public class UserController {
@@ -28,6 +27,7 @@ public class UserController {
 
 
     @ApiOperation("update user data")
+    @PreAuthorize(BOTH)
     @PutMapping("{id}")
     public ResponseEntity<UserDetailResponse> updateUser(@PathVariable("id") Long id, @RequestBody UpdateUserRequest userUpdate) {
         User user = userService.updateUser(id, userMapper.updateUserRequestToUser(userUpdate));
@@ -37,6 +37,7 @@ public class UserController {
     //=========================Delete=========================//
 
     @ApiOperation("remove a user")
+    @PreAuthorize(ADMIN)
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
