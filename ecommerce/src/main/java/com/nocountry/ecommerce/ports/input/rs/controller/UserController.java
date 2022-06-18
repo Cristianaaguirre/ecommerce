@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.*;
 
 @RequestMapping(USER_URI)
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
 public class UserController {
