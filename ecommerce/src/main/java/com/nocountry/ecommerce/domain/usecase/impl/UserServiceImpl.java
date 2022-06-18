@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final RoleRepository roleRepository;
 
-    private final static String ROLE_USER = "ROLE_ADMIN";
+    private final static String ROLE_ADMIN = "ROLE_ADMIN";
 
     //=========================Create User=========================//
 
@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if (userRepository.existsByEmail(user.getEmail())) throw new AlreadyExistsException(user.getEmail());
 
-        user.setRole(roleRepository.findByName(ROLE_USER)
-                .orElseThrow((() -> new RoleNotFoundException(ROLE_USER))));
+        user.setRole(roleRepository.findByName(ROLE_ADMIN)
+                .orElseThrow((() -> new RoleNotFoundException(ROLE_ADMIN))));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);

@@ -18,6 +18,7 @@ import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.INVOICE_UR
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping(INVOICE_URI)
 public class InvoiceController {
 

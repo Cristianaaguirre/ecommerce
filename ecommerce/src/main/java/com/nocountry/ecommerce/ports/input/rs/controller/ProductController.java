@@ -25,6 +25,7 @@ import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.*;
 
 @RestController
 @RequestMapping(PRODUCT_URI)
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class ProductController {
 
