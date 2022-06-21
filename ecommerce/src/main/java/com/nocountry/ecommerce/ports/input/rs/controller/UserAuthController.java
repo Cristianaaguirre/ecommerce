@@ -59,6 +59,12 @@ public class UserAuthController {
     }
 
     //=========================Login=========================//
+    
+   @GetMapping("/session")
+   @PreAuthorize(BOTH)
+   public Principal getPrincipal(HttpServletRequest request) {
+      return request.getUserPrincipal();
+   }
 
 
     @ApiOperation("log into the ecommerce")
