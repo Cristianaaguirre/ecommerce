@@ -28,6 +28,8 @@ import javax.validation.Valid;
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.AUTHENTICATION_URI;
 import static com.nocountry.ecommerce.ports.input.rs.api.ApiConstants.BOTH;
 
+import java.security.Principal;
+
 @RequestMapping(AUTHENTICATION_URI)
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
