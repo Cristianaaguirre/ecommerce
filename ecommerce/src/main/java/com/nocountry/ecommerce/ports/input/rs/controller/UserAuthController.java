@@ -97,11 +97,5 @@ public class UserAuthController {
         UserDetailResponse userDetailResponse = userMapper.userToUserDetailResponse(user);
         return ResponseEntity.status(HttpStatus.OK).body(userDetailResponse);
     }
-    
-   @GetMapping("/session")
-   @PreAuthorize(BOTH)
-   public Principal returnSession(HttpServletRequest request) {
-      return request.getUserPrincipal();
-   }
 
 }
